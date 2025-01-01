@@ -14,6 +14,7 @@ function pushStatus() {
     + "&t=" + sysStatus.time
     + "&v1=" + JSON.stringify(switchStatus.aenergy.total)
     + "&v2=" + JSON.stringify(switchStatus.apower)
+    + "&v6=" + JSON.stringify(switchStatus.voltage)
     + "&c1=1";
   Shelly.call("HTTP.Request",
     { method: "POST", url: CONFIG.url, headers: CONFIG.httpHeaders, body: body },
