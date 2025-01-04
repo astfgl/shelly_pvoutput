@@ -1,27 +1,3 @@
-
-ProEM
-
-Home
-Actions
-Schedules
-Add-on
-Settings
-Scripts
-Components
-Advanced
-KVS
-
-    Diagnostics
-
-Script name
-
-    Save
-    Stop
-    Delete
-
-    Snippets
-    Docs
-
 let CONFIG = {
   KVS_KEY_PVOUTPUT_HEADERS: "script:" + JSON.stringify(Shelly.getCurrentScriptId()) + ":PVOutput-http-headers",
   url: "https://pvoutput.org/service/r2/addstatus.jsp",
@@ -113,11 +89,3 @@ function setConfiguration(apikey, systemId) {
 loadConfiguration();
 initState();
 Timer.set(300000, true, pushStatus);
-
-Console
-clear console
-Only script logs
-Init: 544.17 0 11.82 0.01 19:44:16
-›_ ↵
-Shelly ProEM 08F9E0EAE11C| 1.4.4| 679fcca9| 7:44:47 pm | Feedback
-
