@@ -13,8 +13,9 @@ var gridExportTotal;
 
 function pushStatus() {
   let sysStatus = Shelly.getComponentStatus("sys");
-  let isoDate = new Date(sysStatus.unixtime * 1000).toISOString();
-
+  //let isoDate = new Date.toISOString();
+  print(myDateString);
+  
   let em10 = Shelly.getComponentStatus("em1:0");
 
   let em1Data0 = Shelly.getComponentStatus("em1data:0");
@@ -24,13 +25,17 @@ function pushStatus() {
   let em1Data1 = Shelly.getComponentStatus("em1data:1");
   let solarImport = em1Data1.total_act_energy - solarImportTotal;
   let solarExport = em1Data1.total_act_ret_energy - solarExportTotal;
-
+  
+  print("gI gE sI sE: ", gridImport, gridExport, solarImport, solarExport);
+  
   let dailyGen = solarExportTotal;
   let currGen = solarExport;
-  let dailyUse = dailyGen - gridExportTotal + gridImportTotal - solarImportTotal;
-  let currUse = currGen - gridExport + gridImport - solarImport;
-
-  let body = "d=" + isoDate.substring(0, 4) + isoDate.substring(5, 7) + isoDate.substring(8, 10)
+  let dailyUse = solarExportTotal - gridExportTotal + gridImportTotal - solarImportTotal;
+  let currUse = solarExport - gridExport + gridImport - solarImport;
+  
+  print("dG cG dU cU: ", dailyGen, currGen, dailyUse, currUse);
+  
+  let body = "d=" + myDateString
     + "&t=" + sysStatus.time
     + "&v1=" + JSON.stringify(dailyGen)
     + "&v2=" + JSON.stringify(currGen*12)
@@ -61,7 +66,7 @@ function initState() {
   let em1Data1 = Shelly.getComponentStatus("em1data:1");
   solarImportTotal = em1Data1.total_act_energy;
   solarExportTotal = em1Data1.total_act_ret_energy;
-
+  
   print("Init: ", gridImportTotal, gridExportTotal, solarImportTotal, solarExportTotal);
 }
 
@@ -87,5 +92,11 @@ function setConfiguration(apikey, systemId) {
 }
 
 loadConfiguration();
+var myDate = new Date();
+var myDateString = myDate.getFullYear() 
+  + ('0' + (myDate.getMonth()+1)).slice(-2) 
+  + ('0' + myDate.getDate()).slice(-2);
+print(myDate);
+print(myDateString);
 initState();
 Timer.set(300000, true, pushStatus);
